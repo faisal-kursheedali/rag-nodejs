@@ -1,4 +1,5 @@
 import { pipeline } from "@xenova/transformers";
+import chalk from "chalk";
 
 // Cosine similarity helper
 function cosineSimilarity(a, b) {
@@ -31,12 +32,21 @@ export class RAG {
       "feature-extraction",
       "Xenova/all-MiniLM-L6-v2"
     );
-    // this.generator = await pipeline("text-generation", "Xenova/distilgpt2");
+    this.generator = await pipeline("text-generation", "Xenova/distilgpt2");
 
-    this.generator = await pipeline(
-      "text2text-generation",
-      "Xenova/flan-t5-small"
-    );
+    // this.generator = await pipeline(
+    //   "text2text-generation",
+    //   "Xenova/flan-t5-large"
+    // );
+    // this.generator = await pipeline(
+    //   "text2text-generation",
+    //   "Xenova/flan-t5-small"
+    // );
+
+    // this.generator = await pipeline(
+    //   "text-generation",
+    //   "Xenova/gpt2" // or "Xenova/distilgpt2"
+    // );
 
     console.log("Generating embeddings for data...");
     for (const item of this.data) {
@@ -56,18 +66,48 @@ export class RAG {
     const similarities = this.data.map((item) => ({
       id: item.id,
       text: item.text,
+      description: item.description || "",
       score: cosineSimilarity(queryEmbedding, item.embedding),
     }));
+
+    console.debug("Similarities:", similarities);
 
     similarities.sort((a, b) => b.score - a.score);
     const topChunks = similarities.slice(0, topK);
 
-    const contextText = topChunks.map((c) => c.text).join("\n");
-    const prompt = `Context:\n${contextText}\n\nAnswer the question briefly.\nQuestion: ${query}\nAnswer:`;
+    const contextText = topChunks
+      .map((c) => `${c.text} ${c.description}`)
+      .join("\n");
+    // const prompt = `Answer the question briefly.\nQuestion: ${query} \n Context:\n${contextText}\n\nAnswer:`;
+    const prompt = `
+You are a helpful assistant. Use ONLY the context below to answer the question. If the answer is not in the context, say "Information not available."
 
+Context:
+${contextText}
+
+
+Question: ${query}
+Answer:
+`;
+    console.log("Top chunks:", topChunks);
+    console.log("context text:", contextText);
+    console.log("query text:", query);
+    console.log(chalk.bgCyan("Prompt:", prompt));
+
+    // const output = await this.generator(prompt, {
+    //   max_new_tokens: 300,
+    //   temperature: 0.7,
+    // });
     const output = await this.generator(prompt, {
       max_new_tokens: 50,
-      temperature: 0.7,
+      temperature: 1.0,
+      repetition_penalty: 1.2,
+      // ⭐️ Creative responses in this LOWER MODEL
+      // ⭐️ All these added because these model is not trained for RAG or lower quality model
+      // This model is not trained for creativity
+      // do_sample: true, // enable sampling (if supported)
+      // top_k: 50, // limit sampling to top-k tokens (optional)
+      // top_p: 0.9,
     });
 
     let answer = output[0].generated_text.replace(prompt, "").trim();
