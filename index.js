@@ -4,9 +4,9 @@ import { RAG } from "./rag.js";
 import chalk from "chalk";
 
 async function main() {
-  const dataPath = path.join(process.cwd(), "data2.json");
+  const dataPath = path.join(process.cwd(), "data.json");
   // Huge data sample -> but we get irrelevent response bcoz data set is not correct
-  // const dataPath = path.join(process.cwd(), "data.json");
+  // const dataPath = path.join(process.cwd(), "data2.json");
   const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
 
   const rag = new RAG(data);
