@@ -99,10 +99,10 @@ export class RAG {
     // });
     const output = await this.generator(prompt, {
       max_new_tokens: 50,
-      temperature: 1.0,
       repetition_penalty: 1.2,
       // ⭐️ Creative responses in this LOWER MODEL
       // ⭐️ All these added because these model is not trained for RAG or lower quality model
+      temperature: 0.7,
       // This model is not trained for creativity
       // do_sample: true, // enable sampling (if supported)
       // top_k: 50, // limit sampling to top-k tokens (optional)
