@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "text": "The Information Technology Act, 2000 addresses legal issues concerning electronic commerce, cybercrime, digital signatures, and protection of electronic data in India.",
+    "description": "This law governs cyber activities in India, covering e-commerce, digital contracts, and online data protection."
+  },
+  {
+    "id": 2,
+    "text": "Section 129 of the Motor Vehicles Act mandates that every person driving or riding on a motorcycle must wear a protective headgear conforming to prescribed standards.",
+    "description": "Ensures rider safety by making helmets compulsory, with specific quality standards for protection."
+  },
+  {
+    "id": 3,
+    "text": "The Right to Information Act, 2005 empowers citizens to request information from public authorities, promoting transparency and accountability in governance.",
+    "description": "Gives citizens the right to access government records, fostering transparency in public administration."
+  },
+  {
+    "id": 4,
+    "text": "The Indian Penal Code, Section 420 deals with cheating and dishonestly inducing delivery of property.",
+    "description": "Punishes fraud and dishonest inducement with imprisonment and/or fine."
+  },
+  {
+    "id": 5,
+    "text": "The Consumer Protection Act, 2019 protects the interests of consumers and establishes authorities for timely and effective settlement of consumer disputes.",
+    "description": "Provides mechanisms for grievance redressal, product liability, and consumer rights awareness."
+  }
+]
