@@ -70,8 +70,6 @@ export class RAG {
       score: cosineSimilarity(queryEmbedding, item.embedding),
     }));
 
-    console.debug("Similarities:", similarities);
-
     similarities.sort((a, b) => b.score - a.score);
     const topChunks = similarities.slice(0, topK);
 
@@ -80,15 +78,16 @@ export class RAG {
       .join("\n");
     // const prompt = `Answer the question briefly.\nQuestion: ${query} \n Context:\n${contextText}\n\nAnswer:`;
     const prompt = `
-You are a helpful assistant. Use ONLY the context below to answer the question. If the answer is not in the context, say "Information not available."
-
-Context:
-${contextText}
-
-
-Question: ${query}
-Answer:
-`;
+    You are a helpful assistant. Use ONLY the context below to answer the question. If the answer is not in the context, say "Information not available."
+    
+    Context:
+    ${contextText}
+    
+    
+    Question: ${query}
+    Answer:
+    `;
+    console.debug("Similarities:", similarities);
     console.log("Top chunks:", topChunks);
     console.log("context text:", contextText);
     console.log("query text:", query);
